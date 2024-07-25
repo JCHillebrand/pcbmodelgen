@@ -71,13 +71,13 @@ std::string ExtrudedPolygon::GetCSX_Script()
             continue;
         last_point = m_PolyOutline[i];
 
-        size_t str_len = snprintf(nullptr, 0, "p(1,%ld)=%.6f;p(2,%ld)=%.6f;\n", (p + 1),
+        size_t str_len = snprintf(nullptr, 0, "p(1,%ld)=%.2f;p(2,%ld)=%.2f;\n", (p + 1),
                                   m_PolyOutline[i].real(), (p + 1), m_PolyOutline[i].imag());
         if (str_len <= 0)
             throw 11;
         str_len++;
         char buffer[str_len];
-        snprintf(buffer, str_len, "p(1,%ld)=%.6f;p(2,%ld)=%.6f;\n", (p + 1),
+        snprintf(buffer, str_len, "p(1,%ld)=%.2f;p(2,%ld)=%.2f;\n", (p + 1),
                  m_PolyOutline[i].real(), (p + 1), m_PolyOutline[i].imag());
         str_points += buffer;
         p++;
@@ -95,26 +95,26 @@ std::string ExtrudedPolygon::GetCSX_Script()
 
     if (m_Thickness == 0)
     {
-        size_t str_len = snprintf(nullptr, 0, "CSX = AddPolygon(CSX, '%s', %ld, 2, %.6f, p);\n",
+        size_t str_len = snprintf(nullptr, 0, "CSX = AddPolygon(CSX, '%s', %ld, 2, %.2f, p);\n",
                                   m_MaterialName.c_str(), m_Priority, m_Z_Height);
         if (str_len <= 0)
             throw 11;
         str_len++;
         char buffer[str_len];
-        snprintf(buffer, str_len, "CSX = AddPolygon(CSX, '%s', %ld, 2, %.6f, p);\n",
+        snprintf(buffer, str_len, "CSX = AddPolygon(CSX, '%s', %ld, 2, %.2f, p);\n",
                  m_MaterialName.c_str(), m_Priority, m_Z_Height);
         str_full += buffer;
     }
     else
     {
         size_t str_len =
-            snprintf(nullptr, 0, "CSX = AddLinPoly(CSX, '%s', %ld, 2, %.6f, p, %.6f);\n",
+            snprintf(nullptr, 0, "CSX = AddLinPoly(CSX, '%s', %ld, 2, %.2f, p, %.2f);\n",
                      m_MaterialName.c_str(), m_Priority, m_Z_Height, m_Thickness);
         if (str_len <= 0)
             throw 11;
         str_len++;
         char buffer[str_len];
-        snprintf(buffer, str_len, "CSX = AddLinPoly(CSX, '%s', %ld, 2, %.6f, p, %.6f);\n",
+        snprintf(buffer, str_len, "CSX = AddLinPoly(CSX, '%s', %ld, 2, %.2f, p, %.2f);\n",
                  m_MaterialName.c_str(), m_Priority, m_Z_Height, m_Thickness);
         str_full += buffer;
     }
@@ -497,7 +497,7 @@ void Zone::ApproximatePolygon(std::vector<std::complex<double>>& Points, double 
         std::complex<double> line_a = Points[i - 1] - Points[i - 2];
         std::complex<double> line_b = Points[i] - Points[i - 2];
         double angle_diff = getVectAngle(line_a, line_b);
-        double error = fabs(sin(angle_diff) * fabs(line_a));
+        double error = fabs(sin(angle_diff) * abs(line_a));
         if (error < MaxError)
         {
             // erase center point if error in allowed range

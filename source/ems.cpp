@@ -1283,7 +1283,12 @@ bool PCB_EMS_Model::GetZone(SREC Srec)
         throw ems_exc("GetZone: 'min_thickness' field read failed");
 
     // points
-    while (Srec.GetNext("filled_polygon"))
+    // Find out if user wants to use filled polygons or just outlines
+    std::string fill_mode = "filled_polygon";
+    if(m_ConvSet.use_polygon_outlines){
+        fill_mode = "polygon";
+    }
+    while (Srec.GetNext(fill_mode.c_str()))
     {
         std::vector<std::complex<double>> points;
         SREC filled_poly = Srec;
