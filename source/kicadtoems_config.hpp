@@ -54,6 +54,7 @@ public:
         double pcb_metal_thickness;
         bool pcb_metal_zero_thick;
         size_t corner_approximation;
+        bool use_polygon_outlines;
     } conversion_settings;
 
     struct mesh_params_t {

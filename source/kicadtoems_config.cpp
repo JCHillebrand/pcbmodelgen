@@ -60,6 +60,7 @@ void Configuration::LoadConfig(const char* ConfigFile)
     conversion_settings.pcb_metal_thickness = GetConf_asDouble(conv_set, "pcb_metal_thickness");
     conversion_settings.pcb_metal_zero_thick = GetConf_asBool(conv_set, "pcb_metal_zero_thick");
     conversion_settings.corner_approximation = GetConf_asInt(conv_set, "corner_approximation");
+    conversion_settings.use_polygon_outlines = GetConf_asBool(conv_set, "use_polygon_outlines");
     // configuration interactions
     if (conversion_settings.pcb_metal_zero_thick)
     {
