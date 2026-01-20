@@ -1323,8 +1323,11 @@ bool PCB_EMS_Model::GetZone(SREC Srec)
         {
             points.erase(points.end() - 1);
         }
-        Zone poly(points, height, width, m_ConvSet.pcb_metal_thickness, m_MetalPriority,
-                  m_ConvSet.corner_approximation, material, false);
+        // When use_polygon_outlines is true, points are already the actual copper boundary,
+        // so pass 0 for width and true for OutlineIsCenter to avoid any offset expansion
+        double zone_width = m_ConvSet.use_polygon_outlines ? 0.0 : width;
+        Zone poly(points, height, zone_width, m_ConvSet.pcb_metal_thickness, m_MetalPriority,
+                  m_ConvSet.corner_approximation, material, m_ConvSet.use_polygon_outlines);
 
         m_Polys.push_back(poly);
     }
